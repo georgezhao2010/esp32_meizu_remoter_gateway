@@ -3,7 +3,7 @@
 一个ESP3232固件，用于魅族遥控器的网关，可以将魅族遥控器的温湿度数据通过局域网进行推送，同时还支持通过局域网控制魅族遥控器发送和接收红外数据。
 
 魅族遥控器如下图：
-
+![remoter](https://user-images.githubusercontent.com/27534713/131553205-0a2ce801-df07-4943-ba96-bc730ce44635.jpg)
 
 # 特色
 - 零代码/零配置文件/零命令行操作
@@ -19,16 +19,18 @@
 由于烧录过程中，esphome-flasher可能会访问网络获取分区表和bootloder，如果是中国国内网络，可能会显示网络超时错误，关掉esphome-flasher并重开，多尝试几次即可。
 
 # 基本概念定义
-图中是比较常见的ESP32开发板--NodeMCU-32S。
+图中是比较常见的ESP32开发板NodeMCU-32S。
 ![esp32](https://user-images.githubusercontent.com/27534713/131534909-ef80cda9-1f67-4032-b2b1-15576f4d1030.jpg)
 ## 功能键
-上方红圈是GPIO0的下拉微动开关，安住可以下拉GPIO0的电平，我们在下文中称为功能键，用于网关的操作。
+上方红圈是GPIO0的下拉微动开关，按住可以下拉GPIO0的电平，我们在下文中称为功能键，用于网关的操作。
 ## 状态灯
 下方红圈的蓝色LED接在GPIO2，我们在下文中称为状态灯，用来表示网关的状态。状态灯有以下状态。
 - **常亮**, 状态灯一直亮的状态，表示此时无线网络连接正常。
 - **常灭**, 如果电源指示灯(红色LED)正常点亮，而状态灯一直为灭的状态，表示此时无线网无法连接，可以检查无线路由器或者重启网关。
 - **慢闪**, 此时状态灯2秒钟闪烁一次，我们在下文中称为慢闪，具体含义下文会提及。
 - **快闪**, 此时状态灯每秒钟闪烁5次，我们在下文中称为快闪，具体含义下文会提及。
+
+*注意:使用非NodeMCU-32S的其它ESP32模块，也许需自行处理GPIO0/GPIO2的输入输出*
 
 
 # 配网
@@ -74,4 +76,4 @@ type='_meizu_remoter_gateway._tcp.local.', name='1C4BD9._meizu_remoter_gateway._
 ## TCP
 魅族遥控器网关开放并监听8266端口，支持多用户连接，payload形式为JSON。
 
-关于网关与网关集成的更多操作，请参阅[魅族万能遥控器网关集成](https://github.com/georgezhao2010/meizu_remoter_gateway/README.md)的说明。
+关于网关与网关集成的更多操作，请参阅[魅族遥控器网关集成](https://github.com/georgezhao2010/meizu_remoter_gateway/README.md)的说明。
