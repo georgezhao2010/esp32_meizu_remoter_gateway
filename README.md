@@ -16,7 +16,7 @@
 
 # 下载和烧录
 
-克隆本仓库，或者下载最新的Release，在build目录下有一个esp32_meizu_remoter_gateway.bin文件，这就是ESP32的固件，请下载并使用[esphome-flasher](https://github.com/esphome/esphome-flasher/releases/latestr)烧录进ESP32中。
+克隆本仓库，或者下载最新的Release，在build目录下有一个esp32_meizu_remoter_gateway.bin文件，这就是ESP32的固件，请下载并使用[esphome-flasher](https://github.com/esphome/esphome-flasher/releases/latest)烧录进ESP32中。
 
 由于烧录过程中，esphome-flasher可能会访问网络获取分区表和bootloder，如果是中国国内网络，可能会显示网络超时错误，关掉esphome-flasher并重开，多尝试几次即可。
 
