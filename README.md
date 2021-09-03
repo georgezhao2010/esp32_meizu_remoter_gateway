@@ -10,6 +10,7 @@
 - 零代码/零配置文件/零命令行操作
 - 手机App配网，并支持重新配置，修改Wi-Fi不需要重新烧录固件
 - 与遥控器智能绑定，可以随时向网关添加遥控器绑定或者移除遥控器，增减遥控器不需要烧录固件
+- 通过通讯传送需要发送的红外码，改变红外码不需要烧录固件
 - 可以绑定多个遥控器，轮询查询各遥控器的温湿度数据并通过网络推送
 - 网络中可以存在多个蓝牙网关，每个绑定不同遥控器，实现全屋覆盖
 - 固件基于[ESP-IDF](https://github.com/espressif/esp-idf)编写，TTL日志输出，方便定位问题
@@ -59,6 +60,8 @@
 - 在网关进入正常工作模式(非配网模式)时，按住功能键2秒钟，网关进入绑定模式，此时状态灯为慢闪状态。
 - 拿起一个遥控器并尽量靠近网关，网关如果发现这个设备，状态灯会快闪2秒，并退出绑定模式，该遥控器绑定成功。
 
+或 在[魅族遥控器网关集成](https://github.com/georgezhao2010/meizu_remoter_gateway)中调用bind服务指定进入绑定状态
+
 ## 解绑单个遥控器
 此部分操作需要在[魅族遥控器网关集成](https://github.com/georgezhao2010/meizu_remoter_gateway)中进行操作，见[解除绑定](https://github.com/georgezhao2010/meizu_remoter_gateway#%E8%A7%A3%E9%99%A4%E7%BB%91%E5%AE%9A)部分的描述。
 
@@ -74,6 +77,12 @@
 
 如果一个遥控器在轮询时失败，将会向客户端推送其不可用状态。如果连续5次轮询失败，该设备将会被移除出轮询列表，在下次重新启动网关之前，不再更新该设备的数据。这种情况可能是遥控器设别故障或电池耗尽。在排除故障后，将设备与网关重新绑定，可恢复数据的更新。
 
+# 红外发送与接收
+## 发送
+支持按照传送的key与ircode,让遥控器发送指定红外信号，当遥控器发送完成后，网关会快闪1秒
+## 接收(Beta)
+可以使网关进入20秒的红外接收状态，收到的红外数据将以蓝牙Notify的形式输出在TTL。据观察，遥控器似乎并不能准确接收红外数据，时灵时不灵，接收到的数据也奇形怪状，有待验证。
+
 # 网络服务与通讯
 ## mDNS
 魅族遥控器网关支持mDNS服务,服务名称为`_meizu_remoter_gateway._tcp.local.`,使用zeroconf可获得以下格式信息
@@ -83,5 +92,18 @@ type='_meizu_remoter_gateway._tcp.local.', name='1C4BD9._meizu_remoter_gateway._
 
 ## TCP
 魅族遥控器网关开放并监听8266端口，支持多用户连接，payload形式为JSON。
+
+
+### 网关接收消息
+| 消息 | 数据字段 | 示例 | 说明 |
+| ---- | ---- | ---- | ---- |
+| config_info | 无 | {"type":"config_info"} | 客户端索取网关配置信息 |
+| bind | 无 | {"type":"bind"} | 使网关进入最长30秒遥控器绑定状态 |
+| removebind | device: 移除绑定遥控器的蓝牙地址 | {"type":"removebind","data":{"device":"ab:cd:12:34:56:ef"}} | 移除已经绑定的遥控器 |
+| heartbeat | 无 | {"type":"heartbeat"} | 心跳，如果最长3分钟无法收到心跳或者其它消息，网关将断开此客户端 |
+| subscribe | 无 | {"type":"subscribe"} | 订阅推送消息，如设备状态更新，更新间隔变化，设备移除等 |
+| setinterval | update_interval: 以分钟计数的数据更新间隔 | {"type":"setinterval","data":{"update_interval":10}} | 更新间隔可接收数字为1-30之间(包含1与30) |
+| irsend | device: 发射红外码的遥控器蓝牙地址; key: 就是那个蓝牙日志的key; ir_code(非必须):就是那个蓝牙日志的ir_code | {"type":"irsend","data":{"device":"ab:cd:12:34:56:ef","key":"65001C63C68D8000C8","ircode":"0123456789abcdef..."}} | 发送指定红外码 |
+| irrecv | device: 接收红外码的遥控器蓝牙地址 | {"type":"irrecv","data":{"device":"ab:cd:12:34:56:ef"}} | 接收红外数据并通过TTL输出 |
 
 关于网关与网关集成的更多操作，请参阅[魅族遥控器网关集成](https://github.com/georgezhao2010/meizu_remoter_gateway/README.md)的说明。
