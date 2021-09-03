@@ -1,4 +1,5 @@
 # 魅族遥控器蓝牙网关
+[![Stable](https://img.shields.io/github/v/release/georgezhao2010/esp32_meizu_remoter_gateway)](https://github.com/georgezhao2010/esp32_meizu_remoter_gateway/releases/latest)
 
 一个ESP3232固件，用于魅族遥控器的网关，可以将魅族遥控器的温湿度数据通过局域网进行推送，同时还支持通过局域网控制魅族遥控器发送和接收红外数据。
 
@@ -93,17 +94,136 @@ type='_meizu_remoter_gateway._tcp.local.', name='1C4BD9._meizu_remoter_gateway._
 ## TCP
 魅族遥控器网关开放并监听8266端口，支持多用户连接，payload形式为JSON。
 
-
 ### 网关接收消息
-| 消息 | 数据字段 | 示例 | 说明 |
-| ---- | ---- | ---- | ---- |
-| config_info | 无 | {"type":"config_info"} | 客户端索取网关配置信息 |
-| bind | 无 | {"type":"bind"} | 使网关进入最长30秒遥控器绑定状态 |
-| removebind | device: 移除绑定遥控器的蓝牙地址 | {"type":"removebind","data":{"device":"ab:cd:12:34:56:ef"}} | 移除已经绑定的遥控器 |
-| heartbeat | 无 | {"type":"heartbeat"} | 心跳，如果最长3分钟无法收到心跳或者其它消息，网关将断开此客户端 |
-| subscribe | 无 | {"type":"subscribe"} | 订阅推送消息，如设备状态更新，更新间隔变化，设备移除等 |
-| setinterval | update_interval: 以分钟计数的数据更新间隔 | {"type":"setinterval","data":{"update_interval":10}} | 更新间隔可接收数字为1-30之间(包含1与30) |
-| irsend | device: 发射红外码的遥控器蓝牙地址; key: 就是那个蓝牙日志的key; ir_code(非必须):就是那个蓝牙日志的ir_code | {"type":"irsend","data":{"device":"ab:cd:12:34:56:ef","key":"65001C63C68D8000C8","ircode":"0123456789abcdef..."}} | 发送指定红外码 |
-| irrecv | device: 接收红外码的遥控器蓝牙地址 | {"type":"irrecv","data":{"device":"ab:cd:12:34:56:ef"}} | 接收红外数据并通过TTL输出 |
+- 获取网关配置信息
+```
+{
+  "type": "config_info"
+}
+```
+- 订阅消息推送，只有向网关发送该消息，才会收到消息推送
+```
+{
+  "type": "subscribe"
+}
+```
+- 使网关进入遥控器绑定状态(最长30秒)
+```
+{
+  "type": "bind"
+}
+```
+- 移除已经绑定的遥控器
+```
+{
+  "type":"removebind",
+  "data":{
+    "device":"ab:6d:12:34:56:ef"
+  }
+}
+```
+- 心跳, 如3分钟内无心跳或其它消息，客户端将被断开
+```
+{
+  "type":"heartbeat"
+}
+```
+- 设置更新间隔(分钟)
+```
+{
+  "type":"setinterval",
+  "data":{
+    "update_interval":10
+  }
+}
+```
+- 发射红外
+```
+{
+  "type":"irsend",
+  "data":{
+    "device":"ab:2d:12:34:56:ef",
+    "key":"65001C63C68D8000C8",
+    "ircode":"0123456789abcdef..."
+  }
+}
+```
+- 接收红外
+```
+{
+  "type":"irrecv",
+  "data":{
+    "device":"ab:2d:12:34:56:ef"
+  }
+}
+```
+
+### 网关回应消息
+- 获取网关配置信息回应
+```
+{
+  "type":"config_info",
+  "data":{
+    "version":"0.3.0",
+    "serialno":"1B923A",
+    "update_interval":5
+  }
+}
+```
+- 绑定状态回应
+```
+{
+  "type": "bind",
+  "data":{
+    "status":1
+  }
+}
+```
+- 心跳回应
+```
+{
+  "type":"heartbeat"
+}
+```
+
+### 网关推送消息
+- 设备状态更新
+```
+{
+  "type":"update",
+  "data":{
+    "device":"12:62:33:b5:9f",
+    "available":1,
+    "status":{
+      "manufacturer":"Meizu",
+      "model":"R16",
+      "fireware":"v_3.0.10.23",
+      "temperature":32.62,
+      "humidity":75.33,
+      "battery":90,
+      "voltage":2.9,
+      "rssi":-47
+    }
+  }
+}
+```
+- 更新间隔变化推送
+```
+{
+  "type":"setinterval",
+  "data":{
+    "update_interval":10
+  }
+}
+```
+- 设备移除推送
+```
+{
+  "type":"removebind",
+  "data":{
+    "device":"ab:6d:12:34:56:ef"
+  }
+}
+```
 
 关于网关与网关集成的更多操作，请参阅[魅族遥控器网关集成](https://github.com/georgezhao2010/meizu_remoter_gateway/README.md)的说明。
