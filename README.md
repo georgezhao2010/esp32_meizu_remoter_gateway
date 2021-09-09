@@ -113,6 +113,15 @@ type='_meizu_remoter_gateway._tcp.local.', name='1C4BD9._meizu_remoter_gateway._
   "type": "bind"
 }
 ```
+- 调整绑定操作信号阈值
+```
+{
+  "type": "bindthrld",
+  "data":{
+    "threshold":-35
+  }
+}
+```
 - 移除已经绑定的遥控器
 ```
 {
