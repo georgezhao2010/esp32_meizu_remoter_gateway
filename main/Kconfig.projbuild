@@ -1,0 +1,82 @@
+menu "Custom Configurayion"
+    menu "WIFI Configuration"
+
+        config WIFI_SOFTAP_PASS
+            string "SoftAP Wi-Fi Password"
+            default "ESP32xAP"
+            help
+                Wi-Fi password (WPA or WPA2) for the example to use.
+
+        config WIFI_SOFTAP_USE_POP
+            bool
+            default y
+            prompt "Use proof-of-possession"
+            help
+                Proof-of-possession can be optionally used to prove that the device is indeed
+                in possession of the user who is provisioning the device. This proof-of-possession
+                is internally used to generate the shared secret through key exchange.
+
+        config WIFI_SOFTAP_POP
+            string "Proof-of-possession"
+            default "p1d32a94"
+            depends on WIFI_SOFTAP_USE_POP
+
+        config WIFI_AP_RECONN_ATTEMPTS
+            int "Maximum AP connection attempts"
+            default 10
+            help
+                Set the maximum connection attempts to perform when connecting to a Wi-Fi AP.
+    endmenu
+
+    menu "LED Configuration"
+        config LED_GPIO
+            int "GPIO for LED"
+            default 2
+        
+        config LED_SLOW_BLINK_CYCLE
+            int "LED slow blink cycle in 200 microseconds"
+            default 10
+        
+        config LED_FAST_BLINK_CYCLE
+            int "LED fast blink cycle in 200 microseconds"
+            default 1
+    endmenu
+
+    menu "Socket Configuration"
+        config SOCKET_USE_IPV6
+            bool 
+            default n
+            prompt "Use IPv6"
+
+        config SOCKET_LISTEN_PORT
+            int "Port to Listen"
+            default 8266
+        
+        config SOCKET_TIMEOUT
+            int "timeout with receive"
+            default 30
+    endmenu
+
+    menu "BLE Binding Configuration"
+        config BLE_BIND_DURATION
+            int "Binding waitting time in seconds"
+            default 30
+        
+        config BLE_RSSI_HIGH_THRLD
+            int "Binding RSSI threshold in DB"
+            default -30
+    endmenu
+
+    menu "mDNS Configuration"
+        config MDNS_SERVICENAME
+            string "mDNS service name"
+            default "_meizu_remoter_gateway"
+    endmenu
+
+    menu "Update Configuration"
+        config  DEFAULT_UPDATE_INTERVAL
+            int "Default update interval"
+            default 5
+            prompt "The default interval of update device status"
+    endmenu
+endmenu
