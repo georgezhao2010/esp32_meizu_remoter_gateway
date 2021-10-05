@@ -108,8 +108,7 @@ bool MEIZURemoter::SendIRCode(BLEAddress addr, uint8_t * key, uint16_t keylen, u
             GATTRemoteCharacteristic * pCh = pService->GetCharacteristic(characteristicUUID);
             if(SendCommand(pCh, ++m_sequence, CMD_SEND_IR, key, keylen)) {
                 Read(pCh);
-                if(m_readlen == 5 && m_readbuff[0] == 0x55 && m_readbuff[3] == CMD_SEND_IR_READY && m_readbuff[4] == 0x00)
-                {
+                if(m_readlen == 5 && m_readbuff[0] == 0x55 && m_readbuff[3] == CMD_SEND_IR_READY && m_readbuff[4] == 0x00) {
                     uint8_t packet_count = ircodelen / MAX_PACKET_PAYLOAD + (ircodelen % MAX_PACKET_PAYLOAD > 0? 1: 0);
                     uint8_t streamlen = keylen + 2;
                     uint8_t * stream = (uint8_t *)malloc(streamlen);

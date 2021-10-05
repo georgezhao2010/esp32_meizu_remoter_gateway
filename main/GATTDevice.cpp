@@ -42,7 +42,7 @@ GATTDevice::~GATTDevice(){
     ClearServices();
     esp_ble_gattc_app_unregister(m_appid);
     if(g_appidmap.find(m_appid) != g_appidmap.end())
-		g_appidmap.erase(m_appid);
+        g_appidmap.erase(m_appid);
 }
 
 bool GATTDevice::Connect(BLEAddress addr){
@@ -147,8 +147,7 @@ void GATTDevice::GAPEventHandler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_pa
                             uint8_t *adv_name = NULL;
                             uint8_t adv_name_len = 0;
                             adv_name = esp_ble_resolve_adv_data(scan_result->scan_rst.ble_adv,ESP_BLE_AD_TYPE_NAME_CMPL, &adv_name_len);
-                            if(scan_result->scan_rst.rssi >= g_scan_threshold)
-                            {
+                            if(scan_result->scan_rst.rssi >= g_scan_threshold) {
                                 char * pName = (char *)malloc(adv_name_len + 1);
                                 memcpy(pName, adv_name, adv_name_len);
                                 pName[adv_name_len] = 0;
@@ -243,8 +242,8 @@ void GATTDevice::GATTEventHandler(esp_gattc_cb_event_t event, esp_gatt_if_t gatt
 
 void GATTDevice::HandleEvent(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if, esp_ble_gattc_cb_param_t *param){
     if (m_gattc_if == ESP_GATT_IF_NONE && event != ESP_GATTC_REG_EVT){
-		return;
-	}
+        return;
+    }
     
     switch(event){
         case ESP_GATTC_OPEN_EVT:
@@ -319,9 +318,9 @@ void GATTDevice::HandleEvent(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if,
 
 void GATTDevice::ClearServices(){
     for (auto &it : m_mapServices) {
-	   delete it.second;
-	}
-	m_mapServices.clear();
+       delete it.second;
+    }
+    m_mapServices.clear();
 }
 
 GATTRemoteService * GATTDevice::GetService(const char * uuid){

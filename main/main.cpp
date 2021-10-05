@@ -21,7 +21,7 @@
 #endif
 
 typedef struct esp_custom_app_desc_t {
-	char app_author_name[16];
+    char app_author_name[16];
 }esp_custom_app_desc_t ;
 
 const __attribute__((section(".rodata_custom_desc"))) esp_custom_app_desc_t custom_app_desc = {.app_author_name="@georgezhao2010"};
@@ -69,7 +69,6 @@ bool setup(void){
         ESP_LOGE("Init", "Failed to WIFI initialization");
         return false;
     }
-    
     bool provisioned;
     if(!wifi_provisioned(RESTORE_WIFI_CONFIG, &provisioned)){
         ESP_LOGE("Init", "Failed to Get WiFi provision");
