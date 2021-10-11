@@ -10,18 +10,18 @@
 
 class BLEUUID{
 public:
-	BLEUUID();
-	BLEUUID(esp_bt_uuid_t uuid);
-	BLEUUID(const char * uuid);
-	BLEUUID(uint16_t uuid);
-	BLEUUID(uint32_t uuid);
-	bool operator==(const BLEUUID& otherUUID) const;
-	bool operator!=(const BLEUUID& otherUUID) const;
-	bool operator<(const BLEUUID& otherUUID) const;
-	bool operator>(const BLEUUID& otherUUID) const;
-	esp_bt_uuid_t* getNative(){return &m_uuid;}
-	std::string toString();
+    BLEUUID();
+    BLEUUID(esp_bt_uuid_t uuid);
+    BLEUUID(const char * uuid);
+    BLEUUID(uint16_t uuid);
+    BLEUUID(uint32_t uuid);
+    bool operator==(const BLEUUID& otherUUID) const;
+    bool operator!=(const BLEUUID& otherUUID) const;
+    bool operator<(const BLEUUID& otherUUID) const;
+    bool operator>(const BLEUUID& otherUUID) const;
+    esp_bt_uuid_t* getNative(){return &m_uuid;}
+    std::string toString();
 private:
-	esp_bt_uuid_t m_uuid;
+    esp_bt_uuid_t m_uuid;
 }; 
 #endif /* _BLEUUID_H_ */

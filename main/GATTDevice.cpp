@@ -252,8 +252,7 @@ void GATTDevice::HandleEvent(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if,
                 m_connid = param->open.conn_id;
                 esp_ble_gap_read_rssi(*m_addr.getNative());
             }
-            else
-            {
+            else {
                 m_connectingState = GATTConnectionState::Failed;
                 m_lock->Unlock();
             }

@@ -73,8 +73,7 @@ bool GATTRemoteCharacteristic::Read(){
 
 bool GATTRemoteCharacteristic::RegNotify(){
     bool result = false;
-    if(FeatureSupports(ESP_GATT_CHAR_PROP_BIT_NOTIFY))
-    {
+    if(FeatureSupports(ESP_GATT_CHAR_PROP_BIT_NOTIFY)){
         esp_err_t ret = esp_ble_gattc_register_for_notify(
             m_pService->GetDevice()->GetInterface(),
             *(m_pService->GetDevice()->GetBLEAddress().getNative()),
@@ -94,8 +93,7 @@ bool GATTRemoteCharacteristic::RegNotify(){
 
 bool GATTRemoteCharacteristic::UnregNotify(){
     bool result = false;
-    if(FeatureSupports(ESP_GATT_CHAR_PROP_BIT_NOTIFY))
-    {
+    if(FeatureSupports(ESP_GATT_CHAR_PROP_BIT_NOTIFY)){
         esp_err_t ret = esp_ble_gattc_unregister_for_notify(
             m_pService->GetDevice()->GetInterface(),
             *(m_pService->GetDevice()->GetBLEAddress().getNative()),

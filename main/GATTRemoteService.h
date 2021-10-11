@@ -16,18 +16,18 @@ class GATTRemoteCharacteristic;
 class GATTRemoteService{
 public:
     GATTRemoteService(GATTDevice* pDevice, esp_gatt_id_t srvcId, uint16_t startHandle, uint16_t endHandle);
-	~GATTRemoteService();
-	GATTRemoteCharacteristic * GetCharacteristic(BLEUUID uuid);
-	GATTRemoteCharacteristic * GetCharacteristicByHandle(uint16_t handle);
-	inline GATTDevice * GetDevice(){return m_pDevice;}
+    ~GATTRemoteService();
+    GATTRemoteCharacteristic * GetCharacteristic(BLEUUID uuid);
+    GATTRemoteCharacteristic * GetCharacteristicByHandle(uint16_t handle);
+    inline GATTDevice * GetDevice(){return m_pDevice;}
 private:
-	void ClearCharacteristics();
+    void ClearCharacteristics();
     GATTDevice*         m_pDevice;
-	esp_gatt_id_t       m_srvcId;
-	uint16_t            m_startHandle;
-	uint16_t            m_endHandle;
-	std::map<BLEUUID, GATTRemoteCharacteristic*> m_mapCharacteristics;
-	std::map<uint16_t, GATTRemoteCharacteristic*> m_mapCharacteristicsByHandle;
+    esp_gatt_id_t       m_srvcId;
+    uint16_t            m_startHandle;
+    uint16_t            m_endHandle;
+    std::map<BLEUUID, GATTRemoteCharacteristic*> m_mapCharacteristics;
+    std::map<uint16_t, GATTRemoteCharacteristic*> m_mapCharacteristicsByHandle;
 };
 
 #endif

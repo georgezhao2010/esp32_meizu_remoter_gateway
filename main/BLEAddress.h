@@ -11,16 +11,16 @@
 
 class BLEAddress {
 public:
-	BLEAddress();
-	BLEAddress(esp_bd_addr_t address);
-	BLEAddress(const char * stringAddress);
-	bool operator==(const BLEAddress& otherAddress) const;
-	bool operator!=(const BLEAddress& otherAddress) const;
-	bool operator<(const BLEAddress& otherAddress) const;
-	bool operator>(const BLEAddress& otherAddress) const;
-	inline esp_bd_addr_t* getNative(){return & m_address;}
-	std::string toString();
+    BLEAddress();
+    BLEAddress(esp_bd_addr_t address);
+    BLEAddress(const char * stringAddress);
+    bool operator==(const BLEAddress& otherAddress) const;
+    bool operator!=(const BLEAddress& otherAddress) const;
+    bool operator<(const BLEAddress& otherAddress) const;
+    bool operator>(const BLEAddress& otherAddress) const;
+    inline esp_bd_addr_t* getNative(){return & m_address;}
+    std::string toString();
 private:
-	esp_bd_addr_t m_address;
+    esp_bd_addr_t m_address;
 };
 #endif /* _BLEADDRESS_H_ */
